@@ -34,7 +34,7 @@ API de catálogo de produtos construída com NestJS, utilizando DDD (Domain Driv
 - TypeORM
 - PostgreSQL
 - Event-driven architecture (Event Bus interno)
-- Jest (testes unitários e e2e)
+- Jest (testes unitários)
 - Docker / Docker Compose
 - Class Validator
 
@@ -148,7 +148,7 @@ O sistema utiliza um Event Bus interno para desacoplar regras de negócio da aud
 
 # 🧪 Estratégia de Testes
 
-O projeto utiliza Jest com duas camadas:
+O projeto utiliza Jest:
 
 ## ✔ Unit Tests
 
