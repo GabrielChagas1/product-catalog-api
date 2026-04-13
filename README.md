@@ -60,80 +60,123 @@ src/
 
 ---
 
-# 📌 Decisões arquiteturais
+## 📌 Decisões Arquiteturais
 
-- Domain First: regras de negócio isoladas de framework
-- Use Cases: cada ação do sistema é um caso de uso explícito
-- Repository Pattern: abstração da persistência
-- Mapper Layer: isolamento entre Domain e ORM (TypeORM entities)
-- Modules por contexto: category, product, audit
+A arquitetura do projeto foi pensada para garantir **baixo acoplamento**, **alta coesão** e **facilidade de evolução**, seguindo princípios de DDD (Domain Driven Design) e Clean Architecture.
 
----
+### 🧱 Separação em camadas
 
-# 🧩 Contextos de Domínio
+O sistema está dividido em camadas bem definidas:
 
-## 📁 Product
+- **Domain**: contém as entidades e regras de negócio puras, sem dependência de frameworks
+- **Application**: responsável por orquestrar os casos de uso do sistema
+- **Infrastructure**: implementação de detalhes técnicos (banco de dados, ORM, mensageria)
+- **Presentation**: camada de entrada da aplicação (controllers e DTOs)
 
-Responsável por:
-
-- Criar produtos
-- Atualizar produtos
-- Ativar / arquivar produtos
-- Gerenciar categorias e atributos dinâmicos
+Essa separação permite que regras de negócio permaneçam isoladas e independentes de tecnologia.
 
 ---
 
-## 📁 Category
+### ⚙️ Use Cases como ponto central
 
-Responsável por:
+Cada ação do sistema é representada por um **Use Case**, como:
 
-- Criar categorias
-- Atualizar categorias
-- Consultar categorias
+- `CreateProduct`
+- `AddCategoryToProduct`
+- `ActivateProduct`
 
----
+Isso garante:
 
-## 📁 Audit
-
-Responsável por:
-
-- Consumir eventos de domínio
-- Persistir logs de auditoria
+- Clareza na intenção do código
+- Facilidade de testes
+- Baixo acoplamento entre camadas
 
 ---
 
-# ⚙️ Estratégia de Mensageria / Auditoria
+### 🗄️ Repository Pattern
 
-O sistema utiliza um Event Bus interno para desacoplar regras de negócio da auditoria.
+Foi utilizado o padrão de repositório para abstrair o acesso a dados.
 
----
+- Interfaces são definidas na camada de **Application**
+- Implementações ficam na **Infrastructure**
 
-## 🔁 Fluxo de eventos
-
-- Um Use Case executa uma ação (ex: criar produto)
-- O domínio gera um Domain Event
-- O EventBus publica o evento
-- O módulo de Audit consome o evento
-- Um Audit Consumer persiste o log no banco
+Isso permite trocar a tecnologia de persistência sem impactar a regra de negócio.
 
 ---
 
-## 📌 Exemplos de eventos
+### 🔄 Mapper Layer
 
-- ProductCreatedEvent
-- ProductArchivedEvent
-- ProductActivatedEvent
-- CategoryCreatedEvent
-- ProductAddCategoryEvent
+Para evitar acoplamento com o ORM (TypeORM), foi criada uma camada de **mapeamento** entre:
+
+- Entidades de domínio
+- Entidades de persistência (ORM)
 
 ---
 
-## 💡 Benefícios dessa abordagem
+### 📦 Modularização por contexto
 
-- Baixo acoplamento entre módulos
-- Auditoria não impacta regra de negócio
-- Facilidade de escalabilidade (Kafka/RabbitMQ futuro)
-- Permite reprocessamento de eventos
+O sistema é dividido em módulos por domínio:
+
+- `Product`
+- `Category`
+- `Audit`
+
+## ⚙️ Estratégia de Mensageria / Auditoria
+
+A auditoria do sistema foi projetada utilizando uma abordagem baseada em **eventos de domínio (Domain Events)**, permitindo desacoplar completamente a regra de negócio da geração de logs.
+
+---
+
+### 🔁 Fluxo de funcionamento
+
+O fluxo de auditoria segue os seguintes passos:
+
+1. Um **Use Case** executa uma ação relevante (ex: criação de produto)
+2. A entidade ou o caso de uso gera um **Domain Event**
+3. O evento é publicado através de um **Event Bus interno**
+4. O módulo de **Audit** consome esse evento
+5. Um **consumer** persiste as informações no banco de dados
+
+---
+
+### 📌 Exemplos de eventos
+
+- `ProductCreatedEvent`
+- `ProductActivatedEvent`
+- `ProductArchivedEvent`
+- `CategoryCreatedEvent`
+- `ProductAddCategoryEvent`
+
+---
+
+### 🎯 Objetivos da abordagem
+
+Essa estratégia foi adotada para:
+
+- **Desacoplar a auditoria da regra de negócio**
+- Evitar efeitos colaterais dentro dos Use Cases
+- Permitir evolução independente do mecanismo de auditoria
+- Facilitar integração futura com mensageria externa (Kafka, RabbitMQ)
+
+---
+
+### 🚀 Benefícios
+
+- Melhor organização e separação de responsabilidades
+- Facilidade para adicionar novos consumidores de eventos
+- Possibilidade de escalar o processamento de eventos
+- Base preparada para arquitetura distribuída
+
+---
+
+### 🔮 Evolução futura
+
+O Event Bus interno pode ser facilmente substituído por um broker externo, como:
+
+- Kafka
+- RabbitMQ
+
+Permitindo que o sistema evolua para um modelo mais distribuído sem grandes mudanças na regra de negócio.
 
 ---
 
@@ -153,7 +196,6 @@ O projeto utiliza Jest:
 ## ✔ Unit Tests
 
 - Testam Use Cases isoladamente
-- Mock de repositórios e EventBus
 
 ---
 
