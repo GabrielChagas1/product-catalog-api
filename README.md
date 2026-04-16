@@ -21,7 +21,7 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-# 📦 Product Catalog API (NestJS + DDD + Event Driven)
+# 📦 Product Catalog API
 
 API de catálogo de produtos construída com NestJS, arquitetura em camadas, event-driven architecture e um sistema de auditoria baseado em eventos de domínio.
 
