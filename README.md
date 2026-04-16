@@ -23,7 +23,7 @@
 
 # 📦 Product Catalog API (NestJS + DDD + Event Driven)
 
-API de catálogo de produtos construída com NestJS, utilizando DDD (Domain Driven Design), arquitetura em camadas, event-driven architecture e um sistema de auditoria baseado em eventos de domínio.
+API de catálogo de produtos construída com NestJS, arquitetura em camadas, event-driven architecture e um sistema de auditoria baseado em eventos de domínio.
 
 ---
 
@@ -42,7 +42,7 @@ API de catálogo de produtos construída com NestJS, utilizando DDD (Domain Driv
 
 # 🧠 Arquitetura do Projeto
 
-O projeto segue os princípios de **DDD (Domain Driven Design)** + **Clean Architecture**, garantindo separação de responsabilidades, baixo acoplamento e alta testabilidade.
+O projeto trabalha com separação de responsabilidades, baixo acoplamento e alta testabilidade.
 
 ---
 
